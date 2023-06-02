@@ -1,7 +1,7 @@
 import io, { Socket } from 'socket.io-client';
 import { atom } from 'recoil';
 
-const socket = io('https://evil-trams-shake.loca.lt');
+const socket = io('https://upset-lamps-allow.loca.lt');
 // const socket = io('http://localhost:3001');
 
 export const socketState = atom<Socket>({

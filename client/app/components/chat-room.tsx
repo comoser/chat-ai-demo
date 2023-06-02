@@ -25,7 +25,7 @@ export function ChatRoom() {
 
   useEffect(() => {
     async function fetchMessagesByRoom() {
-      const messages = await fetch(`https://evil-trams-shake.loca.lt/messages/${activeRoom}`, { method: 'GET' })
+      const messages = await fetch(`https://upset-lamps-allow.loca.lt/messages/${activeRoom}`, { method: 'GET' })
         .then<string[]>((res) => res.json());
       setMessages(messages);
     }

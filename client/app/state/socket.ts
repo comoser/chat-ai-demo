@@ -1,8 +1,10 @@
 import io, { Socket } from 'socket.io-client';
 import { atom } from 'recoil';
 
-const socket = io('https://upset-lamps-allow.loca.lt');
-// const socket = io('http://localhost:3001');
+import getConfig from 'next/config';
+
+// @ts-ignore
+const socket = io(process.env.NEXT_PUBLIC_SERVER_TUNNEL_URL);
 
 export const socketState = atom<Socket>({
   key: 'Socket',

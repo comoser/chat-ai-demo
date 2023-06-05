@@ -13,7 +13,7 @@ export function RoomList() {
 
   useEffect(() => {
     async function fetchRooms() {
-      const rooms = await fetch('https://upset-lamps-allow.loca.lt/rooms', { method: 'GET' })
+      const rooms = await fetch(`${process.env.NEXT_PUBLIC_SERVER_TUNNEL_URL}/rooms`, { method: 'GET' })
         .then<string[]>((res) => res.json());
       console.log('on roomList', rooms);
       setRoomList(rooms);
@@ -28,7 +28,7 @@ export function RoomList() {
       return;
     }
     setRoomList([...roomList, roomName]);
-    void fetch('https://upset-lamps-allow.loca.lt/rooms', {
+    void fetch(`${process.env.NEXT_PUBLIC_SERVER_TUNNEL_URL}/rooms`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ room: roomName }),

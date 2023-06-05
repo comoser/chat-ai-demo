@@ -51,8 +51,7 @@ app.get('/chat', async () => {
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: 'https://clear-impalas-brush.loca.lt',
-    // origin: 'http://localhost:3000',
+    origin: process.env.CLIENT_TUNNEL_URL,
     methods: ['GET', 'POST'],
   },
 });
@@ -65,17 +64,28 @@ io.on('connection', (socket) => {
     socket.join(room);
   });
 
-  socket.on('message', (room, message) => {
+  socket.on('message', async (room, message) => {
     console.log('message to', room, message);
     io.to(room).emit('message', `${socket.id}: ${message}`);
     messagesByRoom[room] && messagesByRoom[room].push(`${socket.id}: ${message}`);
+    const aiResponse = await askAI(message)
     // TODO: contact the API here on the message event
+    io.to(room).emit('message', `ai: ${aiResponse}`);
+    messagesByRoom[room] && messagesByRoom[room].push(`AI: ${aiResponse}`);
+
   });
 
   socket.on('disconnect', () => {
     console.log('A user disconnected');
   });
 });
+
+const askAI = async (message) => {
+  const res = await model.call([
+    new HumanChatMessage(message)
+  ]);
+  return res.text
+}
 
 server.listen(3001, () => {
   console.log('Server listening on port 3001');
